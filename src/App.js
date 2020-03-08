@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 
-import { developersFetched } from "./store/developers/actions";
-import { resourcesFetched } from "./store/resources/actions";
+import { fetchData } from "./store/actions";
 import {
   selectDevelopers,
   selectDevelopersLoading
@@ -39,17 +37,7 @@ function App() {
   const loggedinUser = useSelector(selectLoggedinUser);
 
   useEffect(() => {
-    async function fetchData() {
-      const devResponse = await axios.get(
-        "https://my-json-server.typicode.com/Codaisseur/developer-resources-data/developers"
-      );
-      const resResponse = await axios.get(
-        "https://my-json-server.typicode.com/Codaisseur/developer-resources-data/resources"
-      );
-      dispatch(developersFetched(devResponse.data));
-      dispatch(resourcesFetched(resResponse.data));
-    }
-    fetchData();
+    dispatch(fetchData);
   }, [dispatch]);
 
   const statistics = useSelector(selectStatistics);
