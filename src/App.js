@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectDevelopersWithFavorite } from "./store/developers/selectors";
+import {
+  selectDevelopersWithFavorite,
+  selectLoggedinUser
+} from "./store/selectors";
 import "./App.css";
 
 const selectStatistics = state => {
@@ -30,6 +33,8 @@ const selectDevelopersFavoritesResources = developerId => state => {
 };
 
 function App() {
+  const loggedinUser = useSelector(selectLoggedinUser);
+
   const statistics = useSelector(selectStatistics);
   const resources = useSelector(selectResources);
   const developers = useSelector(selectDevelopers);
@@ -47,6 +52,15 @@ function App() {
 
   return (
     <div className="App">
+      <p
+        style={{
+          margin: "-1rem 0 2rem 0",
+          padding: "0.5rem",
+          background: "#eee"
+        }}
+      >
+        Welcome back, <strong>{loggedinUser.name}</strong>!
+      </p>
       <h1>Web development resources</h1>
       <div className="statistics">
         <div className="statistic">
