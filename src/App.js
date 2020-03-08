@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./App.css";
 
@@ -9,8 +9,19 @@ const selectStatistics = state => {
   };
 };
 
+const selectResources = state => {
+  return state.resources;
+};
+
 function App() {
   const statistics = useSelector(selectStatistics);
+  const resources = useSelector(selectResources);
+
+  const [favoriteId, setFavoriteId] = useState(2);
+
+  const developersWithThisFavorite = useSelector(state => {
+    return state.developers.filter(dev => dev.favorites.includes(favoriteId));
+  });
 
   return (
     <div className="App">
@@ -25,6 +36,27 @@ function App() {
           <p>resources</p>
         </div>
       </div>
+      <h2>
+        Who likes{" "}
+        <select
+          value={favoriteId}
+          onChange={e => setFavoriteId(parseInt(e.target.value))}
+        >
+          {resources.map(resource => {
+            return (
+              <option key={resource.id} value={resource.id}>
+                {resource.name}
+              </option>
+            );
+          })}
+        </select>
+        ?
+      </h2>
+      <ul>
+        {developersWithThisFavorite.map(dev => {
+          return <li key={dev.id}>{dev.name}</li>;
+        })}
+      </ul>
     </div>
   );
 }
