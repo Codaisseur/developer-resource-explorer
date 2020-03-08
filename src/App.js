@@ -8,6 +8,7 @@ import {
 } from "./store/selectors";
 
 import ResourcesSection from "./components/ResourcesSection/ResourcesSection";
+import AddResourceForm from "./components/AddResourceForm/AddResourceForm";
 
 import "./App.css";
 
@@ -124,6 +125,7 @@ function App() {
         </div>
       </div>
       <ResourcesSection />
+      <AddResourceForm />
     </div>
   );
 }
