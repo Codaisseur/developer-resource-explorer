@@ -1,8 +1,19 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
-import { selectResources } from "./store/resources/selectors";
+import { developersFetched } from "./store/developers/actions";
+import { resourcesFetched } from "./store/resources/actions";
 import {
+  selectDevelopers,
+  selectDevelopersLoading
+} from "./store/developers/selectors";
+import {
+  selectResources,
+  selectResourcesLoading
+} from "./store/resources/selectors";
+import {
+  selectStatistics,
   selectDevelopersWithFavorite,
   selectLoggedinUser
 } from "./store/selectors";
@@ -12,34 +23,42 @@ import AddResourceForm from "./components/AddResourceForm/AddResourceForm";
 
 import "./App.css";
 
-const selectStatistics = state => {
-  return {
-    numDevelopers: state.developers.length,
-    numResources: state.resources.length
-  };
-};
-
-const selectDevelopers = state => {
-  return state.developers;
-};
-
 const selectDevelopersFavoritesResources = developerId => state => {
-  const developer = state.developers.find(dev => dev.id === developerId);
+  const developer = state.developers.data.find(dev => dev.id === developerId);
   if (!developer) {
     return [];
   }
 
-  return state.resources.filter(resource => {
+  return state.resources.data.filter(resource => {
     return developer.favorites.includes(resource.id);
   });
 };
 
 function App() {
+  const dispatch = useDispatch();
   const loggedinUser = useSelector(selectLoggedinUser);
 
+  useEffect(() => {
+    async function fetchData() {
+      const devResponse = await axios.get(
+        "https://my-json-server.typicode.com/Codaisseur/developer-resources-data/developers"
+      );
+      const resResponse = await axios.get(
+        "https://my-json-server.typicode.com/Codaisseur/developer-resources-data/resources"
+      );
+      dispatch(developersFetched(devResponse.data));
+      dispatch(resourcesFetched(resResponse.data));
+    }
+    fetchData();
+  }, [dispatch]);
+
   const statistics = useSelector(selectStatistics);
+
   const resources = useSelector(selectResources);
+  const resourcesLoading = useSelector(selectResourcesLoading);
+
   const developers = useSelector(selectDevelopers);
+  const developersLoading = useSelector(selectDevelopersLoading);
 
   const [developerId, setDeveloperId] = useState(2);
   const [favoriteId, setFavoriteId] = useState(2);
@@ -61,16 +80,26 @@ function App() {
           background: "#eee"
         }}
       >
-        Welcome back, <strong>{loggedinUser.name}</strong>!
+        {loggedinUser ? (
+          <span>
+            Welcome back, <strong>{loggedinUser.name}</strong>!
+          </span>
+        ) : (
+          <span>...</span>
+        )}
       </p>
       <h1>Web development resources</h1>
       <div className="statistics">
         <div className="statistic">
-          <div className="statistic__num">{statistics.numDevelopers}</div>
+          <div className="statistic__num">
+            {developersLoading ? "..." : statistics.numDevelopers}
+          </div>
           <p>developers</p>
         </div>
         <div className="statistic">
-          <div className="statistic__num">{statistics.numResources}</div>
+          <div className="statistic__num">
+            {resourcesLoading ? "..." : statistics.numResources}
+          </div>
           <p>resources</p>
         </div>
       </div>

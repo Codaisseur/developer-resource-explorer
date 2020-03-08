@@ -12,3 +12,10 @@ export function addResource(name, type, tags, url) {
     }
   };
 }
+
+export function resourcesFetched(resources) {
+  return {
+    type: "RESOURCES_FETCHED",
+    payload: resources
+  };
+}

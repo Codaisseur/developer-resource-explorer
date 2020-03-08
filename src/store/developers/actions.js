@@ -6,3 +6,10 @@ export function toggleFavorite(developerId, resourceId) {
     payload: { developerId, resourceId }
   };
 }
+
+export function developersFetched(developers) {
+  return {
+    type: "DEVELOPERS_FETCHED",
+    payload: developers
+  };
+}

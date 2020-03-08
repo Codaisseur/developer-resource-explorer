@@ -24,9 +24,11 @@ export default function ResourcesSection() {
           return (
             <div key={resource.id} className="resource">
               <div className="title">
-                <button onClick={toggle}>
-                  {me.favorites.includes(resource.id) ? "♥" : "♡"}
-                </button>{" "}
+                {me && (
+                  <button onClick={toggle}>
+                    {me.favorites.includes(resource.id) ? "♥" : "♡"}
+                  </button>
+                )}{" "}
                 <strong>{resource.name}</strong> (<em>{resource.type}</em>)
                 &mdash; Find out more at{" "}
                 <a href={resource.url}>{resource.url}</a>
