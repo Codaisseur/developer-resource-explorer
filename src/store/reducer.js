@@ -1,13 +1,13 @@
 // src/store/reducer.js
-const initialState = {
-  // TODO
-  hello: "world"
-};
+import { combineReducers } from "redux";
+import userSliceReducer from "./user/reducer";
+import resourcesSliceReducer from "./resources/reducer";
+import developersSliceReducer from "./developers/reducer";
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    default: {
-      return state;
-    }
-  }
-}
+const reducer = combineReducers({
+  user: userSliceReducer,
+  resources: resourcesSliceReducer,
+  developers: developersSliceReducer
+});
+
+export default reducer;
