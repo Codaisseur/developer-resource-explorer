@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+
+import { selectResources } from "./store/resources/selectors";
 import {
   selectDevelopersWithFavorite,
   selectLoggedinUser
 } from "./store/selectors";
+
+import ResourcesSection from "./components/ResourcesSection/ResourcesSection";
+
 import "./App.css";
 
 const selectStatistics = state => {
@@ -11,10 +16,6 @@ const selectStatistics = state => {
     numDevelopers: state.developers.length,
     numResources: state.resources.length
   };
-};
-
-const selectResources = state => {
-  return state.resources;
 };
 
 const selectDevelopers = state => {
@@ -122,6 +123,7 @@ function App() {
           </ul>
         </div>
       </div>
+      <ResourcesSection />
     </div>
   );
 }

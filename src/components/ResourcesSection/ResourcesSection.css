@@ -1,0 +1,16 @@
+.ResourcesSection .resource {
+  margin-bottom: 1rem;
+}
+
+.ResourcesSection .resource .title {
+  margin-bottom: 0.5rem;
+}
+
+.ResourcesSection .tag {
+  margin-right: 0.5rem;
+  padding: 1px 4px;
+  border-radius: 5px;
+  font-size: 0.85em;
+  border: 1px solid #ddd;
+  color: #666;
+}
